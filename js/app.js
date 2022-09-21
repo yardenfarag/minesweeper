@@ -5,6 +5,8 @@ const MINE_COUNT = 2
 const MINE = '💥'
 const MARK = '🚩'
 const EMPTY = ''
+const WIN = '😁'
+const LOSE = '😭'
 
 var gBoard
 var gGameOn = false
@@ -25,7 +27,6 @@ var gStopper = 0
 function initGame(size = 4, mines = 2) {
     resetStopper()
     onLoad()
-    hideElements(".restart")
     gBoard = buildBoard(size)
     renderBoard(gBoard)
     document.addEventListener("click", () => {addMines(gBoard, mines); setMinesAroundCount(gBoard);}, {once: true})
@@ -90,7 +91,7 @@ function cellClicked(elCell, i, j) {
     gGameOn = true
     if (gBoard[i][j].isMarked === true) return
     gBoard[i][j].isShown = true
-    elCell.style.backgroundColor = 'beige'
+    elCell.style.backgroundColor = 'rgb(150, 133, 182)'
     if (gBoard[i][j].isMine === true) {
         elCell.innerText = MINE
     } else if (gBoard[i][j].minesAroundCount === 0) {
@@ -115,21 +116,18 @@ function cellMarked(elCell, i, j) {
 }
 
 function checkGameOver(board) {
-    var elLosingStatement = document.querySelector("h3")
     var elRestart = document.querySelector(".restart")
     for (var i = 0; i < board.length; i++) {
         for (var j = 0; j < board.length; j++) {
             if (board[i][j].isMine && board[i][j].isShown) {
-                elLosingStatement.innerText = "You lost!"
-                elRestart.classList.remove("hidden")
+                elRestart.innerHTML = LOSE
                 clearInterval(gInterval)
                 gGameOn = false
             }
         }
     }
     if (checkIfWin(gBoard)) {
-        elLosingStatement.innerText = "You Win!"
-        elRestart.classList.remove("hidden")
+        elRestart.innerHTML = WIN
         clearInterval(gInterval)
         gGameOn = false
     }
@@ -157,7 +155,7 @@ function expandShown(board, elCell, cellI, cellJ) {
                 board[i][j].isShown = true
                 elCell = document.querySelector(".cell-" + i + "-" + j)
                 elCell.innerText = board[i][j].minesAroundCount
-                elCell.style.backgroundColor = 'beige'
+                elCell.style.backgroundColor = 'rgb(150, 133, 182)'
             }
         }
     }

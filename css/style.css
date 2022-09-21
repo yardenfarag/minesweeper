@@ -1,14 +1,52 @@
+* {
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;    
+    /* margin:auto; */
+}
+
+body {
+    background: rgb(238,174,202);
+    background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);
+    /* margin:auto; */
+    text-align: center;
+}
+
 td {
     width: 30px;
     height: 30px;
-    border: 2px solid black;
+    border: 1px solid rgb(255, 255, 255);
     text-align: center;
 }
 
 td:hover {
-    background-color: gray;
+    background-color: rgb(237, 206, 255);
 }
 
 .hidden {
     display: none;
 }
+
+button {
+    width: 70px;
+    height: 50px;
+    background-color: rgb(219, 204, 247);
+    font-weight: bold;
+} 
+
+button:hover {
+    background-color: rgb(237, 206, 255);
+}
+
+.restart {
+    font-size: 30px;
+}
+
+h1 {
+    margin: auto;   
+}
+
+table {
+    margin: auto;
+}
+
+
+
