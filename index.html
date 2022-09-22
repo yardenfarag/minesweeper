@@ -6,17 +6,19 @@
     <title>MineSweeper</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
-
+ 
 <body onkeyup="handleKey(event)" onload="initGame()">
     <h1>MineSweeper</h1>
-    <div class="restart" onclick="initGame()">
-        😊
+    <div class="restart" onclick="initGame(4, 2)">
+        😃
     </div>
     <div class="level"></div>
-    <div class="time">Your time: 0:0</div>
+    <div class="time">Your time: 0:00</div>
     <table>
         <tbody class="board"></tbody>
     </table>
+    <div class="lives">💗💗💗</div>
+    <button class="mode" onclick="lightDarkMode(this)">☾</button>
     <script src="js/util.js"></script>
     <script src="js/app.js"></script>
 </body>
