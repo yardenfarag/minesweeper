@@ -1,14 +1,15 @@
 'use strict'
 
+var gMin = 0
+var gSec = 0
+
+var gDarkMode = false
 
 function getRandomIntInclusive(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1) + min); // The maximum is inclusive and the minimum is inclusive
 }
-
-var gMin = 0
-var gSec = 0
 
 function stopper() {
   var elTime = document.querySelector(".time")
@@ -29,7 +30,7 @@ function resetStopper() {
   elTime.innerText = "Your time: 0:00"
 }
 
-var gDarkMode = false
+
 function lightDarkMode(elBtn) {
   if (!gDarkMode) {
     gDarkMode = true
