@@ -27,23 +27,25 @@ function lightDarkMode(elBtn) {
   }
   
 function safeClick(board) {
+  // in case of easy level(4X4) there is only one safe click otherwise it's too easy
   if (!gGame.isOn) return
   if (gGame.gameOver) return
   if (gSafeClicks === 0) return
+
   reduceSafeClicks()
 
-  
-
-  for (let i = 0; i < board.length; i++) {
-    for (let j = 0; j < board.length; j++) {
-      if (!board[i][j].isMine && !board[i][j].isShown) {
-        var elCell = document.querySelector(".cell-" + i + "-" + j)
-        elCell.style.backgroundColor = 'yellow'
-        return
-      } 
-    }   
+  // generating random places to safe click
+  for (var safe = 0; safe <= gLevel.mines; safe++) {
+    var i = getRandomIntInclusive(0, board.length - 1)
+    var j = getRandomIntInclusive(0, board.length - 1)
+    if (!gBoard[i][j].isMine && !gBoard[i][j].isShown) {
+      var elCell = document.querySelector(".cell-" + i + "-" + j)
+          elCell.classList.add("safe-to-click")
+          setTimeout(() => {elCell.classList.remove("safe-to-click")}, 2500);
+          return
+    }
   }
-    // in case of easy level(4X4) there is only one safe click otherwise it's too easy
+    
 
     
 }

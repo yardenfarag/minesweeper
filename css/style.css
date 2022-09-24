@@ -96,6 +96,10 @@ table {
     text-shadow: 2px 2px #000000;
 }
 
+.safe-to-click {
+    background-color: lightgreen;
+}
+
 .mode {
     font-size: 25px;
 }

@@ -334,26 +334,6 @@ function reduceLives() {
     }
 }
 
-function renderOriginalHTML() {
-    // caliberating HTML
-    var elRestart = document.querySelector(".restart")
-    elRestart.innerHTML = DEFAULT
-    var elLives = document.querySelector('.lives')
-    if (gBoard.length === 4) {
-        elLives.innerHTML = LIFE
-    }
-    else {
-        elLives.innerHTML = LIFE + LIFE + LIFE
-    }
-    var elSafeClicks = document.querySelector('.safe')
-    if (gBoard.length === 4) {
-        elSafeClicks.innerHTML = SAFE
-    }
-    else {
-        elSafeClicks.innerHTML = SAFE + SAFE + SAFE
-    }
-}
-
 function shiftMine() {
     // making sure first click isn't a mine by shifting the mine if it's there.
     var i = 0
