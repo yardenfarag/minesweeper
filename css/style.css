@@ -91,6 +91,11 @@ table {
     font-size: 50px;
 }
 
+.safe {
+    font-size: 50px;
+    text-shadow: 2px 2px #000000;
+}
+
 .mode {
     font-size: 25px;
 }

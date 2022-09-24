@@ -3,7 +3,6 @@
 var gMin = 0
 var gSec = 0
 
-var gDarkMode = false
 
 function getRandomIntInclusive(min, max) {
   min = Math.ceil(min);
@@ -30,22 +29,3 @@ function resetStopper() {
   elTime.innerText = "Your time: 0:00"
 }
 
-
-function lightDarkMode(elBtn) {
-  if (!gDarkMode) {
-    gDarkMode = true
-    elBtn.innerText = '☀️'
-  }
-  else if (gDarkMode) {
-    gDarkMode = false
-    elBtn.innerHTML = '☾'
-  }
-  var elBody = document.querySelector("body")
-  elBody.classList.toggle("dark-mode")
-  var elBtns = document.querySelector("div")
-  elBtns.classList.toggle("dark-mode")
-  elBtn.classList.toggle("dark-mode")
-  var elCell = document.querySelector("td")
-  elCell.classList.toggle("dark-mode")
-  
-}

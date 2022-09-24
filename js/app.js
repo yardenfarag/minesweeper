@@ -37,6 +37,11 @@ function initGame(size = gLevel.size, mines = gLevel.mines) {
     if (size === 4) {
         gLives = 1
     }
+    gSafeClicks = 3
+    if (size === 4) {
+        gSafeClicks = 1
+    }
+
 
     onLoad()
     gBoard = buildBoard(size)
@@ -265,12 +270,18 @@ function expandShown(board, elCell, cellI, cellJ) {
                 !board[i][j].isMine &&
                 !board[i][j].isMarked) {
 
-                if (!gBoard[i][j].isShown) gGame.showCount++
+                if (!board[i][j].isShown) gGame.showCount++
 
                 board[i][j].isShown = true
                 elCell = document.querySelector(".cell-" + i + "-" + j)
                 elCell.innerText = board[i][j].minesAroundCount === 0 ? EMPTY : board[i][j].minesAroundCount
                 elCell.style.backgroundColor = 'rgb(150, 133, 182)'
+                // if (board[i][j].minesAroundCount === 0) {
+                //     var elCell = document.querySelector(".cell-" + i + "-" + j)
+                //     elCell.innerText = EMPTY
+                //     gGame.showCount++
+                //     expandShown(gBoard, elCell, i, j)
+                // }
             }
         }
     }
@@ -327,13 +338,19 @@ function renderOriginalHTML() {
     // caliberating HTML
     var elRestart = document.querySelector(".restart")
     elRestart.innerHTML = DEFAULT
+    var elLives = document.querySelector('.lives')
     if (gBoard.length === 4) {
-        var elLives = document.querySelector('.lives')
         elLives.innerHTML = LIFE
     }
     else {
-        var elLives = document.querySelector('.lives')
         elLives.innerHTML = LIFE + LIFE + LIFE
+    }
+    var elSafeClicks = document.querySelector('.safe')
+    if (gBoard.length === 4) {
+        elSafeClicks.innerHTML = SAFE
+    }
+    else {
+        elSafeClicks.innerHTML = SAFE + SAFE + SAFE
     }
 }
 
