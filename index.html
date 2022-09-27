@@ -6,7 +6,7 @@
     <title>MineSweeper</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
- 
+
 <body onkeyup="handleKey(event)" onload="initGame()">
     <h1>MineSweeper</h1>
     <div class="restart" onclick="initGame(4, 2)">
@@ -14,12 +14,19 @@
     </div>
     <div class="level"></div>
     <div class="time">Your time: 0:00</div>
+    <div class="modes">
+        <button class="seven-boom" onclick="initSevenBoom()">7 Boom!</button>
+        <button class="mode" onclick="lightDarkMode(this)">☾</button>
+    </div>
     <table>
         <tbody class="board"></tbody>
     </table>
-    <div class="lives">💗💗💗</div>
-    <div class="safe" onclick="safeClick(gBoard)">🧷🧷🧷</div>
-    <button class="mode" onclick="lightDarkMode(this)">☾</button>
+    <div class="features">
+        <span class="lives">💗💗💗</span>
+        <span class="safe" onclick="safeClick(gBoard)">🧷🧷🧷</span>
+        <span class="hint" onclick="hints()">💡💡💡</span>
+    </div>
+    <button class="mega-hint" onclick="megaHint()">Mega Hint</button>
     <script src="js/util.js"></script>
     <script src="js/app.js"></script>
     <script src="js/bonus-features.js"></script>

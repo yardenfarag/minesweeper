@@ -9,6 +9,8 @@ const DEFAULT = '😃'
 const LIFE = '💗'
 
 var gBoard
+var gClicked = false
+var gMegaHint
 var gInterval
 var gIntervalSec
 var gLives
@@ -22,41 +24,20 @@ var gGame
 function initGame(size = gLevel.size, mines = gLevel.mines) {
     clearInterval(gInterval)
     clearInterval(gIntervalSec)
-
     resetStopper()
-
-    gGame = {
-        isOn: false,
-        gameOver: false,
-        showCount: 0,
-        markedCount: 0,
-        shownMines: 0,
-        secsPassed: 0
-    }
-    gLives = 3
-    if (size === 4) {
-        gLives = 1
-    }
-    gSafeClicks = 3
-    if (size === 4) {
-        gSafeClicks = 1
-    }
-
-
+    caliberation(size)
     onLoad()
     gBoard = buildBoard(size)
     renderOriginalHTML()
     addMines(gBoard, mines)
     setMinesAroundCount(gBoard)
     renderBoard(gBoard)
-    // if you want to cheat the game, look in the console for mines :)
     console.log(gBoard)
 }
 
 function onLoad() {
     // setting the buttons for the different levels
     var strHTML = ''
-    strHTML += `<h2>Choose difficulty</h2>\n`
     strHTML += `<button class="difficulty" onclick="initGame(${gLevel.size = 4}, ${gLevel.mines = 2})">Easy (4X4)</button>`
     strHTML += `<button class="difficulty" onclick="initGame(${gLevel.size = 8}, ${gLevel.mines = 14})">Medium (8X8)</button>`
     strHTML += `<button class="difficulty" onclick="initGame(${gLevel.size = 12}, ${gLevel.mines = 32})">Expert (12X12)</button>`
@@ -137,7 +118,49 @@ function cellClicked(elCell, i, j) {
 
     gGame.isOn = true
 
-    // can't click on marked cells
+    if (isHintOn) {
+        var elHints = document.querySelector('.hint')
+        hintsReveal(gBoard, elCell, i, j)
+        reduceHints()
+        elHints.classList.remove("clicked")
+        isHintOn = false
+        setTimeout(() => {
+            closeHint(gBoard, elCell, i, j)
+        }, 1000)
+        return
+    }
+
+    if (isMegaHintOn) {
+        if (!gClicked) {
+            gMegaHint.startCell = elCell
+            gMegaHint.startI = i
+            gMegaHint.startJ = j
+            gClicked = true
+        } else {
+            gMegaHint.endCell = elCell
+            gMegaHint.endI = i
+            gMegaHint.endJ = j
+            var elMegaHint = document.querySelector('.mega-hint')
+            megaHintReveal(gBoard, gMegaHint.startCell,
+                gMegaHint.startI, gMegaHint.startJ,
+                gMegaHint.endCell, gMegaHint.endI, gMegaHint.endJ)
+            gClicked = false
+            setTimeout(() => {
+                closeMegaHint(gBoard, gMegaHint.startCell,
+                    gMegaHint.startI, gMegaHint.startJ,
+                    gMegaHint.endCell, gMegaHint.endI, gMegaHint.endJ)
+            },2000)
+            gMegaHints = 0
+            elMegaHint.classList.add('hidden')
+            isMegaHintOn = false
+            return
+        }
+        // setTimeout(() => {
+        //     closeHint(gBoard, elCell, i, j)
+        // }, 1000)
+        return
+    }
+
     if (gBoard[i][j].isMarked === true) return
 
     gBoard[i][j].isShown = true
@@ -151,7 +174,7 @@ function cellClicked(elCell, i, j) {
         gLives--
         gGame.shownMines++
 
-        // looping through the board to reveal all mines in case of losing all lives
+        // looping through the board to reveal all mines in case of losing
         if (gLives === 0) {
             for (var i = 0; i < gBoard.length; i++) {
                 for (var j = 0; j < gBoard.length; j++) {
@@ -221,6 +244,7 @@ function checkGameOver(board) {
                     clearInterval(gIntervalSec)
                     gGame.isOn = false
                     gGame.gameOver = true
+
                 }
 
             }
@@ -229,10 +253,12 @@ function checkGameOver(board) {
 
     if (checkIfWin(gBoard)) {
         elRestart.innerHTML = WIN
+        bestTime()
         clearInterval(gInterval)
         clearInterval(gIntervalSec)
         gGame.isOn = false
         gGame.gameOver = true
+
     }
 }
 
@@ -269,6 +295,7 @@ function expandShown(board, elCell, cellI, cellJ) {
             if (board[i][j].minesAroundCount < 8 &&
                 !board[i][j].isMine &&
                 !board[i][j].isMarked) {
+                if (board[i][j].isShown) continue
 
                 if (!board[i][j].isShown) gGame.showCount++
 
@@ -276,12 +303,10 @@ function expandShown(board, elCell, cellI, cellJ) {
                 elCell = document.querySelector(".cell-" + i + "-" + j)
                 elCell.innerText = board[i][j].minesAroundCount === 0 ? EMPTY : board[i][j].minesAroundCount
                 elCell.style.backgroundColor = 'rgb(150, 133, 182)'
-                // if (board[i][j].minesAroundCount === 0) {
-                //     var elCell = document.querySelector(".cell-" + i + "-" + j)
-                //     elCell.innerText = EMPTY
-                //     gGame.showCount++
-                //     expandShown(gBoard, elCell, i, j)
-                // }
+                if (board[i][j].minesAroundCount === 0) {
+                    expandShown(gBoard, elCell, i, j)
+
+                }
             }
         }
     }
@@ -330,7 +355,7 @@ function reduceLives() {
         clearInterval(gIntervalSec)
         gGame.isOn = false
         gGame.gameOver = true
-        elLives.innerHTML = 'OUT OF LIVES'
+        elLives.innerHTML = ''
     }
 }
 
